@@ -40,15 +40,11 @@ class _ListScreen extends State<ListScreen> {
 
   String _postTaskTitle = '';
   String _postTaskDescription = '';
-  String _postTaskStatus = 'New';
-  DateTime _postTaskDueDate = DateTime.now();
 
   void _postTask() async {
     final formKey = GlobalKey<FormState>();
     String title = '';
     String description = '';
-    String status = 'New';
-    DateTime? dueDate;
 
     await showDialog(
       context: context,
@@ -100,7 +96,7 @@ class _ListScreen extends State<ListScreen> {
                 if (form != null && form.validate()) {
                   form.save();
                   Navigator.pop(context);
-                  _addTask(title, description, status, dueDate);
+                  _addTask(title, description);
                 }
               },
               child: const Text('Save'),
@@ -111,7 +107,7 @@ class _ListScreen extends State<ListScreen> {
     );
   }
 
-  void _addTask(String title, String description, String status, DateTime? dueDate) async {
+  void _addTask(String title, String description) async {
     final url = Uri.parse('http://0.0.0.0:8000/api');
     final response = await http.post(
       url,
@@ -158,7 +154,6 @@ class _ListScreen extends State<ListScreen> {
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        // spread the buttons evenly in the row
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           FloatingActionButton(
