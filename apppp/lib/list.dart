@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'elment.dart';
+
 
 class ListScreen extends StatefulWidget {
   const ListScreen({Key? key}) : super(key: key);
@@ -27,7 +29,8 @@ class _ListScreen extends State<ListScreen> {
     if (response.statusCode == 200) {
       setState(() {
         _getTasksResponse = response.body;
-        _tasks = json.decode(response.body);
+        _tasks = response.body as List;
+        print(_tasks);
       });
     } else {
       setState(() {
@@ -132,6 +135,7 @@ class _ListScreen extends State<ListScreen> {
   }
   @override
   Widget build(BuildContext context) {
+    _getTasks();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Application'),
@@ -142,11 +146,8 @@ class _ListScreen extends State<ListScreen> {
             child: ListView.builder(
               itemCount: _tasks.length,
               itemBuilder: (context, index) {
-                final task = _tasks[index];
-                return ListTile(
-                  title: Text(task['title']),
-                  subtitle: Text(task['description']),
-                );
+                var task = _tasks[index];
+                return ListTilClass(task);
               },
             ),
           ),
